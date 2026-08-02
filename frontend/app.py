@@ -30,7 +30,7 @@ if "localhost" in DEFAULT_BACKEND or "127.0.0.1" in DEFAULT_BACKEND:
             if backend_dir not in sys.path:
                 sys.path.append(backend_dir)
             
-            from app import app as fastapi_app
+            from main import app as fastapi_app
             import uvicorn
             
             def run_fastapi():

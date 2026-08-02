@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code and models
-COPY app.py .
+COPY main.py .
 COPY database.py .
 COPY build.pkl .
 
@@ -20,4 +20,4 @@ EXPOSE 7860
 ENV PYTHONUNBUFFERED=1
 
 # Start FastAPI application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
