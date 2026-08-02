@@ -16,7 +16,11 @@ logger = logging.getLogger("database")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DATABASE_URL:
+if DATABASE_URL:
+    # Automatically rewrite mysql:// to mysql+pymysql:// for SQLAlchemy compatibility
+    if DATABASE_URL.startswith("mysql://"):
+        DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+else:
     db_host = os.getenv("DB_HOST", "localhost")
     db_user = os.getenv("DB_USER", "root")
     db_password = os.getenv("DB_PASSWORD", "password")
