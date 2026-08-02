@@ -37,193 +37,455 @@ if "localhost" in DEFAULT_BACKEND or "127.0.0.1" in DEFAULT_BACKEND:
         except Exception:
             pass
 
-# Set page configuration matching Picture 1
+# Set page configuration
 st.set_page_config(
-    page_title="Loan Prediction Studio",
+    page_title="LoanVision AI — Smart Lending Decisions",
     page_icon="🏦",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS Injection for Picture 1 UI design
+# ─── Premium Dark-Mode Glassmorphism CSS ─────────────────────────────────────
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+        --bg-primary: #0a0e1a;
+        --bg-secondary: #0f1629;
+        --bg-card: rgba(15, 22, 41, 0.65);
+        --bg-card-hover: rgba(20, 30, 55, 0.80);
+        --glass-border: rgba(99, 130, 255, 0.12);
+        --glass-border-hover: rgba(99, 130, 255, 0.28);
+        --text-primary: #e8ecf4;
+        --text-secondary: #8b97b8;
+        --text-muted: #5a6583;
+        --accent-primary: #6366f1;
+        --accent-secondary: #818cf8;
+        --accent-glow: rgba(99, 102, 241, 0.35);
+        --success: #22c55e;
+        --success-bg: rgba(34, 197, 94, 0.12);
+        --success-border: rgba(34, 197, 94, 0.25);
+        --danger: #ef4444;
+        --danger-bg: rgba(239, 68, 68, 0.12);
+        --danger-border: rgba(239, 68, 68, 0.25);
+        --warning: #f59e0b;
+        --cyan: #06b6d4;
+        --radius-lg: 20px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+        --radius-pill: 999px;
+        --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+        --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.10);
+    }
+
     html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
     }
-    
+
     .stApp {
-        background-color: #f4f7fb !important;
+        background: var(--bg-primary) !important;
+        background-image:
+            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent),
+            radial-gradient(ellipse 60% 40% at 80% 100%, rgba(6, 182, 212, 0.08), transparent) !important;
     }
-    
+
     .block-container {
-        padding-top: 1.5rem !important;
-        padding-bottom: 3rem !important;
-        max-width: 1200px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 4rem !important;
+        max-width: 1280px !important;
     }
-    
-    /* Hero Banner */
-    .hero-card {
-        background: linear-gradient(135deg, #0f172a 0%, #2563eb 45%, #38bdf8 100%);
-        color: #ffffff;
-        padding: 32px;
-        border-radius: 24px;
-        display: flex;
-        justify-content: space-between;
-        gap: 24px;
+
+    /* ── Hide Streamlit default header/footer ── */
+    header[data-testid="stHeader"] { background: transparent !important; }
+    footer { display: none !important; }
+    #MainMenu { display: none !important; }
+
+    /* ── Hero Section ── */
+    .hero-wrap {
+        position: relative;
+        background: linear-gradient(135deg, #1a1040 0%, #0f1629 40%, #0c1a2e 70%, #0a1628 100%);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        padding: 48px 44px;
+        margin-bottom: 32px;
+        overflow: hidden;
+        box-shadow: var(--shadow-glass), var(--shadow-glow);
+    }
+    .hero-wrap::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .hero-wrap::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.10) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .hero-eyebrow {
+        display: inline-flex;
         align-items: center;
-        box-shadow: 0 18px 45px rgba(37, 99, 235, 0.22);
+        gap: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent-secondary);
+        background: rgba(99, 102, 241, 0.10);
+        border: 1px solid rgba(99, 102, 241, 0.18);
+        padding: 6px 16px;
+        border-radius: var(--radius-pill);
+        margin-bottom: 20px;
+    }
+    .hero-title {
+        font-size: 2.6rem;
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--text-primary);
+        margin: 0 0 14px;
+        letter-spacing: -0.02em;
+    }
+    .hero-title span {
+        background: linear-gradient(135deg, var(--accent-primary), var(--cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-copy {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        max-width: 640px;
+        margin: 0;
+    }
+    .hero-stats {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+    }
+    .hero-stat {
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius-md);
+        padding: 14px 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hero-stat:hover {
+        border-color: var(--glass-border-hover);
+        background: rgba(255, 255, 255, 0.07);
+        transform: translateY(-2px);
+    }
+    .hero-stat-icon {
+        font-size: 1.3rem;
+    }
+    .hero-stat-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    /* ── Glass Card ── */
+    .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        box-shadow: var(--shadow-glass);
+        transition: border-color 0.3s ease;
+    }
+    .glass-card:hover {
+        border-color: var(--glass-border-hover);
+    }
+    .card-header {
         margin-bottom: 24px;
     }
-    
-    .hero-eyebrow {
-        font-size: 0.8rem;
-        letter-spacing: 0.24em;
-        text-transform: uppercase;
+    .card-header h2 {
+        font-size: 1.3rem;
         font-weight: 700;
-        opacity: 0.9;
-        margin-bottom: 10px;
-    }
-    
-    .hero-title {
-        margin: 0 0 10px;
-        font-size: 2.2rem;
-        font-weight: 800;
-        line-height: 1.15;
-    }
-    
-    .hero-copy {
-        margin: 0;
-        font-size: 1rem;
-        line-height: 1.6;
-        max-width: 620px;
-        opacity: 0.95;
-    }
-    
-    .hero-badges {
+        color: var(--text-primary);
+        margin: 0 0 6px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
         gap: 10px;
-        min-width: 200px;
     }
-    
-    .hero-badge-pill {
-        background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(8px);
-        padding: 10px 16px;
-        border-radius: 999px;
-        font-weight: 600;
+    .card-header p {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* ── Side Panel ── */
+    .side-panel {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        box-shadow: var(--shadow-glass);
+        margin-bottom: 20px;
+    }
+    .side-panel-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 20px;
+    }
+    .check-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-icon {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+    }
+    .check-icon.purple {
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    .check-icon.cyan {
+        background: rgba(6, 182, 212, 0.12);
+        border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    .check-icon.amber {
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    .check-text {
         font-size: 0.9rem;
-        text-align: center;
-        color: white;
+        color: var(--text-secondary);
+        line-height: 1.5;
     }
-    
-    /* Side Card */
-    .side-card {
-        background: #ffffff;
-        border: 1px solid #dbe5f0;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
-    }
-    
-    .side-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #14213d;
-        margin-bottom: 12px;
-    }
-    
-    .feature-list {
-        padding-left: 18px;
-        color: #5f6f8f;
-        display: grid;
-        gap: 8px;
-        margin: 0 0 18px;
-        font-size: 0.95rem;
-    }
-    
-    .db-status-pill {
-        margin-top: 16px;
+    .check-text strong {
+        color: var(--text-primary);
         font-weight: 600;
-        font-size: 0.95rem;
     }
 
-    /* Result Banner */
-    .prediction-banner {
-        padding: 16px;
-        border-radius: 14px;
-        font-weight: 700;
+    /* ── DB Status Pill ── */
+    .db-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: var(--radius-pill);
+        margin-top: 8px;
+    }
+    .db-pill.connected {
+        background: var(--success-bg);
+        border: 1px solid var(--success-border);
+        color: var(--success);
+    }
+    .db-pill.local {
+        background: rgba(245, 158, 11, 0.10);
+        border: 1px solid rgba(245, 158, 11, 0.20);
+        color: var(--warning);
+    }
+
+    /* ── Prediction Result Banners ── */
+    .result-card {
+        border-radius: var(--radius-lg);
+        padding: 28px 32px;
         text-align: center;
-        font-size: 1.2rem;
-        margin-top: 16px;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
     }
-    .prediction-banner.approved {
-        background: #dcfce7;
-        color: #047857;
+    .result-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
     }
-    .prediction-banner.rejected {
-        background: #fee2e2;
-        color: #b91c1c;
+    .result-card.approved {
+        background: var(--success-bg);
+        border: 1px solid var(--success-border);
+    }
+    .result-card.approved::before {
+        background: linear-gradient(90deg, var(--success), #4ade80);
+    }
+    .result-card.rejected {
+        background: var(--danger-bg);
+        border: 1px solid var(--danger-border);
+    }
+    .result-card.rejected::before {
+        background: linear-gradient(90deg, var(--danger), #f87171);
+    }
+    .result-icon {
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+    }
+    .result-label {
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+    .result-card.approved .result-label { color: var(--success); }
+    .result-card.rejected .result-label { color: var(--danger); }
+    .result-sub {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin-top: 4px;
     }
 
-    /* Form Container */
+    /* ── Streamlit form overrides ── */
     div[data-testid="stForm"] {
-        background: #ffffff !important;
-        border: 1px solid #dbe5f0 !important;
-        border-radius: 20px !important;
-        padding: 24px !important;
-        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06) !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
     }
 
-    /* Styled Buttons */
+    /* Input / Select base styling */
+    div[data-testid="stNumberInput"] label,
+    div[data-testid="stSelectbox"] label {
+        color: var(--text-secondary) !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.03em !important;
+        text-transform: uppercase !important;
+    }
+    div[data-testid="stNumberInput"] input,
+    div[data-baseweb="select"] {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: var(--radius-sm) !important;
+        color: var(--text-primary) !important;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+    }
+    div[data-testid="stNumberInput"] input:focus,
+    div[data-baseweb="select"]:focus-within {
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 0 0 3px var(--accent-glow) !important;
+    }
+
+    /* Submit button */
+    div[data-testid="stForm"] button[type="submit"],
     div.stButton > button {
-        background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%) !important;
+        background: linear-gradient(135deg, var(--accent-primary) 0%, #4f46e5 100%) !important;
         color: white !important;
         font-weight: 700 !important;
-        font-size: 1rem !important;
-        padding: 12px 24px !important;
-        border-radius: 999px !important;
+        font-size: 0.95rem !important;
+        padding: 14px 36px !important;
+        border-radius: var(--radius-pill) !important;
         border: none !important;
-        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18) !important;
-        transition: all 0.2s ease !important;
+        box-shadow: 0 8px 24px var(--accent-glow) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        letter-spacing: 0.02em !important;
+    }
+    div[data-testid="stForm"] button[type="submit"]:hover,
+    div.stButton > button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 14px 36px rgba(99, 102, 241, 0.35) !important;
     }
 
-    div.stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.25) !important;
-    }
-    
-    /* Table Styling */
-    .dataframe {
-        border-radius: 12px !important;
+    /* Dataframe styling */
+    div[data-testid="stDataFrame"] {
+        border-radius: var(--radius-md) !important;
         overflow: hidden !important;
+    }
+
+    /* ── Section divider ── */
+    .section-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        margin: 28px 0;
+    }
+
+    /* ── Animated dot ── */
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+    .pulse-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+    .pulse-dot.green { background: var(--success); }
+    .pulse-dot.amber { background: var(--warning); }
+
+    /* ── Footer ── */
+    .app-footer {
+        text-align: center;
+        padding: 32px 0 16px;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+    }
+    .app-footer a {
+        color: var(--accent-secondary);
+        text-decoration: none;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Hero Header Banner matching Picture 1
+# ── Hero Section ──────────────────────────────────────────────────────────────
 st.markdown("""
-<div class="hero-card">
-    <div>
-        <div class="hero-eyebrow">AI-powered lending assistant</div>
-        <div class="hero-title">Make better loan decisions with confidence.</div>
-        <div class="hero-copy">
-            A refined experience for reviewing applicant details and estimating approval outcomes in seconds.
+<div class="hero-wrap">
+    <div class="hero-eyebrow">✦ AI-Powered Lending Intelligence</div>
+    <h1 class="hero-title">Smarter Loan Decisions,<br><span>Built with Confidence.</span></h1>
+    <p class="hero-copy">
+        Instantly evaluate applicant profiles against our trained ML model.
+        Get clear, data-driven approval predictions in seconds — no guesswork.
+    </p>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <span class="hero-stat-icon">⚡</span>
+            <span class="hero-stat-label">Instant Predictions</span>
         </div>
-    </div>
-    <div class="hero-badges">
-        <div class="hero-badge-pill">⚡ Instant review</div>
-        <div class="hero-badge-pill">📈 Clear insights</div>
-        <div class="hero-badge-pill">🔐 Trustworthy screening</div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon">🎯</span>
+            <span class="hero-stat-label">ML-Driven Accuracy</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon">🔒</span>
+            <span class="hero-stat-label">Secure & Logged</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-icon">📊</span>
+            <span class="hero-stat-label">Full Audit Trail</span>
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Main Grid Layout (2 Columns matching Picture 1)
-col_main, col_side = st.columns([2.2, 1.0])
+# ── Main Grid Layout ─────────────────────────────────────────────────────────
+col_main, col_side = st.columns([2.4, 1.0], gap="large")
 
 # Check DB / Backend Health
 backend_url = os.getenv("BACKEND_URL", "http://localhost:8080")
@@ -240,13 +502,19 @@ except Exception:
     db_connected = False
 
 with col_main:
-    # Form Container
-    st.markdown("### Applicant profile")
-    st.caption("Fill in the financial and personal details below to generate a prediction.")
+    # Form Card
+    st.markdown("""
+    <div class="glass-card">
+        <div class="card-header">
+            <h2>📋 Applicant Profile</h2>
+            <p>Complete the financial and personal details below to generate a prediction.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     with st.form("loan_form"):
-        col1, col2 = st.columns(2)
-        
+        col1, col2 = st.columns(2, gap="medium")
+
         with col1:
             age = st.number_input("Customer Age", min_value=18, max_value=100, value=35, step=1)
             income = st.number_input("Applicant Income (₹)", min_value=0, value=45000, step=1000)
@@ -264,26 +532,42 @@ with col_main:
             self_employed = st.selectbox("Self Employed", options=["Yes", "No"], index=1)
             property_area = st.selectbox("Property Area", options=["Rural", "Semiurban", "Urban"], index=0)
 
-        st.markdown("<br>", unsafe_allow_html=True)
-        submit_btn = st.form_submit_button("Predict eligibility")
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        submit_btn = st.form_submit_button("🚀  Predict Eligibility")
 
 with col_side:
-    # Right Side Card matching Picture 1
+    # What This Tool Checks
     st.markdown("""
-    <div class="side-card">
-        <div class="side-title">What this tool checks</div>
-        <ul class="feature-list">
-            <li>Applicant profile and income stability</li>
-            <li>Credit and repayment history</li>
-            <li>Loan amount and tenure suitability</li>
-        </ul>
+    <div class="side-panel">
+        <div class="side-panel-title">What This Tool Checks</div>
+        <div class="check-item">
+            <div class="check-icon purple">📊</div>
+            <div class="check-text"><strong>Income Stability</strong><br>Applicant profile and income assessment</div>
+        </div>
+        <div class="check-item">
+            <div class="check-icon cyan">🏦</div>
+            <div class="check-text"><strong>Credit History</strong><br>CIBIL score and repayment track record</div>
+        </div>
+        <div class="check-item">
+            <div class="check-icon amber">⚖️</div>
+            <div class="check-text"><strong>Loan Suitability</strong><br>Amount and tenure feasibility analysis</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # DB status
     if db_connected:
-        st.markdown(f'<p class="db-status-pill" style="color:#16a34a;">🟢 {db_type} Database Connected</p>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="db-pill connected">
+            <span class="pulse-dot green"></span> {db_type} Database Connected
+        </div>
+        """, unsafe_allow_html=True)
     else:
-        st.markdown('<p class="db-status-pill" style="color:#d97706;">🟢 Local Database Active</p>', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="db-pill local">
+            <span class="pulse-dot amber"></span> Local Database Active
+        </div>
+        """, unsafe_allow_html=True)
 
     # Form Submission Execution & Verdict Display
     if submit_btn:
@@ -293,10 +577,10 @@ with col_side:
         edu_val = 1 if "Graduate" in education else 0
         emp_val = 1 if self_employed == "Yes" else 0
         prev_val = 1 if prev_loan == "Yes" else 0
-        
+
         prop_map = {"Rural": 0, "Semiurban": 1, "Urban": 2}
         prop_val = prop_map[property_area]
-        
+
         band_map = {"Bad": 0, "Good": 1, "Medium": 2}
         band_val = band_map[bandwidth]
 
@@ -316,7 +600,7 @@ with col_side:
             "Customer_Bandwith": band_val
         }
 
-        with st.spinner("Calculating decision..."):
+        with st.spinner("Analyzing applicant profile..."):
             try:
                 resp = requests.post(f"{backend_url}/predict", json=payload, timeout=5)
                 if resp.status_code == 200:
@@ -327,31 +611,42 @@ with col_side:
 
                     if pred_class != 0:
                         st.markdown("""
-                        <div class="prediction-banner approved">
-                            Loan is Approved
+                        <div class="result-card approved">
+                            <div class="result-icon">✅</div>
+                            <div class="result-label">Loan is Approved</div>
+                            <div class="result-sub">Applicant meets eligibility criteria</div>
                         </div>
                         """, unsafe_allow_html=True)
                         st.balloons()
                     else:
                         st.markdown("""
-                        <div class="prediction-banner rejected">
-                            Loan is Rejected
+                        <div class="result-card rejected">
+                            <div class="result-icon">❌</div>
+                            <div class="result-label">Loan is Rejected</div>
+                            <div class="result-sub">Applicant does not meet criteria at this time</div>
                         </div>
                         """, unsafe_allow_html=True)
 
                     if db_saved:
-                        st.caption("✅ Saved to database.")
+                        st.caption("✅ Result logged to database.")
                 else:
                     st.error("Prediction failed.")
             except Exception as e:
                 st.error(f"Backend connection error: {e}")
 
-# History Section (Show Past Entries)
-st.markdown("<br>", unsafe_allow_html=True)
-show_history = st.button("📜 Show Past Entries")
+# ── History Section ───────────────────────────────────────────────────────────
+st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+show_history = st.button("📜  Show Past Entries")
 
 if show_history:
-    st.markdown("### 📜 Previous User Entries")
+    st.markdown("""
+    <div class="glass-card" style="margin-top: 12px;">
+        <div class="card-header">
+            <h2>📜 Prediction History</h2>
+            <p>Previously submitted applications and their verdicts.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     try:
         hist_resp = requests.get(f"{backend_url}/predictions", timeout=3)
         if hist_resp.status_code == 200:
@@ -382,3 +677,10 @@ if show_history:
             st.warning("Unable to fetch history from database.")
     except Exception as ex:
         st.error(f"Error fetching history: {ex}")
+
+# ── Footer ────────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="app-footer">
+    Built with ❤️ using <a href="https://streamlit.io" target="_blank">Streamlit</a> &amp; FastAPI · LoanVision AI
+</div>
+""", unsafe_allow_html=True)
