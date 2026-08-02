@@ -73,7 +73,7 @@ def init_db():
         logger.info("Successfully connected to MySQL database.")
     except Exception as e:
         logger.warning(f"Failed to connect to MySQL database: {e}. Falling back to SQLite.")
-        sqlite_path = "sqlite:///loan_predictions_fallback.db"
+        sqlite_path = "sqlite:////tmp/loan_predictions_fallback.db"
         engine = create_engine(sqlite_path, connect_args={"check_same_thread": False})
         is_sqlite_fallback = True
         logger.info(f"SQLite fallback engine created at {sqlite_path}.")

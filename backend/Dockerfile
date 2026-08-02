@@ -13,11 +13,11 @@ COPY app.py .
 COPY database.py .
 COPY build.pkl .
 
-# Expose port
-EXPOSE 8080
+# Expose port (7860 for Hugging Face Spaces / default environments)
+EXPOSE 7860
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
 # Start FastAPI application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]

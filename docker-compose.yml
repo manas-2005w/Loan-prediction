@@ -25,7 +25,7 @@ services:
     container_name: loan_fastapi_backend
     restart: always
     ports:
-      - "8080:8080"
+      - "8080:7860"
     environment:
       - DATABASE_URL=mysql+pymysql://root:password@db:3306/loan_predictions
     depends_on:
@@ -41,7 +41,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - BACKEND_URL=http://backend:8080
+      - BACKEND_URL=http://backend:7860
     depends_on:
       - backend
 
