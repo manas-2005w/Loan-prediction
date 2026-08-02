@@ -4,6 +4,43 @@ import requests
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import threading
+import time
+import sys
+
+# Auto-start FastAPI backend in a background thread if it is set to localhost/127.0.0.1
+# and no server is currently listening on that port. This allows the app to be deployed
+# entirely within Streamlit Cloud (FastAPI + Streamlit in one container) with zero cost and no credit card.
+DEFAULT_BACKEND = os.getenv("BACKEND_URL", "http://localhost:8080")
+
+if "localhost" in DEFAULT_BACKEND or "127.0.0.1" in DEFAULT_BACKEND:
+    port = 8080
+    try:
+        port = int(DEFAULT_BACKEND.split(":")[-1].split("/")[0])
+    except Exception:
+        pass
+    
+    try:
+        # Check if already running
+        requests.get(f"http://127.0.0.1:{port}/health", timeout=1)
+    except Exception:
+        # Not running, start it in a background thread
+        try:
+            backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend"))
+            if backend_dir not in sys.path:
+                sys.path.append(backend_dir)
+            
+            from app import app as fastapi_app
+            import uvicorn
+            
+            def run_fastapi():
+                uvicorn.run(fastapi_app, host="127.0.0.1", port=port)
+                
+            t = threading.Thread(target=run_fastapi, daemon=True)
+            t.start()
+            time.sleep(2.5)  # Wait for startup
+        except Exception as e:
+            pass
 
 # Set page configurations
 st.set_page_config(
