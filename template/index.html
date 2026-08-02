@@ -39,6 +39,12 @@
             method="post"
             class="loan-form"
           >
+            <input
+              type="hidden"
+              name="show_history"
+              value="0"
+              id="show-history-input"
+            />
             <div class="field-grid">
               <label class="field">
                 <span>Customer Age</span>
@@ -163,8 +169,59 @@
               </label>
             </div>
 
-            <button type="submit">Predict eligibility</button>
+            <div class="form-actions">
+              <button type="submit">Predict eligibility</button>
+              <label class="toggle-pill">
+                <input
+                  type="checkbox"
+                  id="show-history-toggle"
+                  {%
+                  if
+                  show_history
+                  %}checked{%
+                  endif
+                  %}
+                />
+                <span>View past entries</span>
+              </label>
+            </div>
           </form>
+
+          {% if show_history and history_entries %}
+          <div class="history-card">
+            <h3>Recent submissions</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Result</th>
+                    <th>Income</th>
+                    <th>Loan</th>
+                    <th>CIBIL</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for entry in history_entries %}
+                  <tr>
+                    <td>{{ entry.id }}</td>
+                    <td>{{ entry.prediction_result }}</td>
+                    <td>${{ entry.income }}</td>
+                    <td>${{ entry.loan_amount }}</td>
+                    <td>{{ entry.cibil_score }}</td>
+                    <td>{{ entry.created_at }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% elif show_history %}
+          <div class="history-card empty-history">
+            <p>No previous entries found yet.</p>
+          </div>
+          {% endif %}
         </section>
 
         <aside class="card side-card">
@@ -181,9 +238,25 @@
           >
             {{ prediction_text }}
           </div>
+          {% endif %} {% if db_ready %}
+          <p class="db-status">✅ Stored in MySQL database</p>
+          {% else %}
+          <p class="db-status">
+            ⚠️ MySQL not reachable; using local fallback state
+          </p>
           {% endif %}
         </aside>
       </main>
     </div>
+
+    <script>
+      const toggle = document.getElementById("show-history-toggle");
+      const hiddenField = document.getElementById("show-history-input");
+      if (toggle && hiddenField) {
+        toggle.addEventListener("change", () => {
+          hiddenField.value = toggle.checked ? "1" : "0";
+        });
+      }
+    </script>
   </body>
 </html>

@@ -168,6 +168,71 @@ button:hover {
   box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
 }
 
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #f3f6ff;
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.toggle-pill input {
+  accent-color: var(--accent);
+}
+
+.history-card {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fbff;
+  border: 1px solid var(--border);
+}
+
+.history-card h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e4ebf5;
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.db-status {
+  margin-top: 16px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .feature-list {
   padding-left: 18px;
   color: var(--muted);
