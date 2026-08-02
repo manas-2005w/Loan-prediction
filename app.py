@@ -3,9 +3,11 @@ import pickle
 import numpy as np
 import pymysql
 from flask import Flask, request, render_template
+from urllib.parse import urlparse
 
 app = Flask(__name__, template_folder="template", static_folder="staticfiles")
 
+DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL")
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
@@ -16,6 +18,23 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "build.pkl")
 
 
 def get_db_connection():
+    if DATABASE_URL:
+        parsed = urlparse(DATABASE_URL)
+        host = parsed.hostname or DB_HOST
+        port = parsed.port or DB_PORT
+        user = parsed.username or DB_USER
+        password = parsed.password or DB_PASSWORD
+        database = parsed.path.lstrip("/") or DB_NAME
+        return pymysql.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database,
+            port=port,
+            autocommit=True,
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+
     return pymysql.connect(
         host=DB_HOST,
         user=DB_USER,
