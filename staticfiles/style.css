@@ -176,32 +176,84 @@ button:hover {
   flex-wrap: wrap;
 }
 
-.toggle-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #f3f6ff;
-  color: var(--accent-strong);
-  font-weight: 600;
+.btn-primary {
+  flex: 1;
 }
 
-.toggle-pill input {
-  accent-color: var(--accent);
+.btn-history {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-history:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.btn-close-history {
+  background: #e2e8f0;
+  color: #475569;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-close-history:hover {
+  background: #cbd5e1;
 }
 
 .history-card {
-  margin-top: 16px;
-  padding: 16px;
+  margin-top: 20px;
+  padding: 20px;
   border-radius: 16px;
-  background: #f8fbff;
+  background: #f8fafc;
   border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.history-card h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.history-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-danger {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .table-wrap {
@@ -211,26 +263,32 @@ button:hover {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
-th, td {
-  padding: 10px 8px;
+th,
+td {
+  padding: 10px 10px;
   text-align: left;
-  border-bottom: 1px solid #e4ebf5;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 th {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  background: #f1f5f9;
 }
 
 .db-status {
   margin-top: 16px;
   color: var(--muted);
   font-weight: 600;
+}
+
+.db-status.success-db {
+  color: #16a34a;
 }
 
 .feature-list {

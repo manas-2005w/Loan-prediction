@@ -69,7 +69,7 @@
               </label>
 
               <label class="field">
-                <span>Applicant Income</span>
+                <span>Applicant Income (₹)</span>
                 <input
                   type="number"
                   name="ApplicantIncome"
@@ -79,7 +79,7 @@
               </label>
 
               <label class="field">
-                <span>Loan Amount</span>
+                <span>Loan Amount (₹)</span>
                 <input
                   type="number"
                   name="LoanAmount"
@@ -170,58 +170,59 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit">Predict eligibility</button>
-              <label class="toggle-pill">
-                <input
-                  type="checkbox"
-                  id="show-history-toggle"
-                  {%
-                  if
-                  show_history
-                  %}checked{%
-                  endif
-                  %}
-                />
-                <span>View past entries</span>
-              </label>
+              <button type="submit" class="btn-primary">Predict eligibility</button>
+              <button type="button" class="btn-history" id="btn-toggle-history">📜 Show Past Entries</button>
             </div>
           </form>
 
-          {% if show_history and history_entries %}
-          <div class="history-card">
-            <h3>Recent submissions</h3>
+          <div class="history-card" id="history-container" style="{% if not (show_history or history_entries) %}display: none;{% endif %}">
+            <div class="history-header">
+              <h3>📜 Previous User Entries (Database Logs)</h3>
+              <button type="button" class="btn-close-history" id="btn-close-history">&times; Close</button>
+            </div>
             <div class="table-wrap">
-              <table>
+              <table id="history-table">
                 <thead>
                   <tr>
                     <th>ID</th>
                     <th>Result</th>
+                    <th>Age</th>
                     <th>Income</th>
                     <th>Loan</th>
                     <th>CIBIL</th>
-                    <th>Time</th>
+                    <th>Tenure</th>
+                    <th>Timestamp</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {% for entry in history_entries %}
-                  <tr>
-                    <td>{{ entry.id }}</td>
-                    <td>{{ entry.prediction_result }}</td>
-                    <td>${{ entry.income }}</td>
-                    <td>${{ entry.loan_amount }}</td>
-                    <td>{{ entry.cibil_score }}</td>
-                    <td>{{ entry.created_at }}</td>
-                  </tr>
-                  {% endfor %}
+                <tbody id="history-tbody">
+                  {% if history_entries %}
+                    {% for entry in history_entries %}
+                    <tr>
+                      <td><strong>#{{ entry.id }}</strong></td>
+                      <td>
+                        <span class="badge {% if 'Approved' in entry.prediction_result %}badge-success{% else %}badge-danger{% endif %}">
+                          {{ entry.prediction_result }}
+                        </span>
+                      </td>
+                      <td>{{ entry.age }} yrs</td>
+                      <td>₹{{ entry.income }}</td>
+                      <td>₹{{ entry.loan_amount }}</td>
+                      <td>{{ entry.cibil_score }}</td>
+                      <td>{{ entry.tenure }} mo</td>
+                      <td>{{ entry.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">
+                        No previous entries loaded yet. Click <strong>"Show Past Entries"</strong> to fetch database records.
+                      </td>
+                    </tr>
+                  {% endif %}
                 </tbody>
               </table>
             </div>
           </div>
-          {% elif show_history %}
-          <div class="history-card empty-history">
-            <p>No previous entries found yet.</p>
-          </div>
-          {% endif %}
         </section>
 
         <aside class="card side-card">
@@ -238,11 +239,15 @@
           >
             {{ prediction_text }}
           </div>
-          {% endif %} {% if db_ready %}
-          <p class="db-status">✅ Stored in MySQL database</p>
+          {% endif %} 
+          
+          {% if db_saved %}
+          <p class="db-status success-db">✅ Logged to MySQL Database</p>
+          {% elif db_ready %}
+          <p class="db-status">🟢 MySQL Database Connected</p>
           {% else %}
           <p class="db-status">
-            ⚠️ MySQL not reachable; using local fallback state
+            ⚠️ MySQL Connection Warning (Check MYSQL_PUBLIC_URL in .env)
           </p>
           {% endif %}
         </aside>
@@ -250,11 +255,54 @@
     </div>
 
     <script>
-      const toggle = document.getElementById("show-history-toggle");
-      const hiddenField = document.getElementById("show-history-input");
-      if (toggle && hiddenField) {
-        toggle.addEventListener("change", () => {
-          hiddenField.value = toggle.checked ? "1" : "0";
+      const toggleBtn = document.getElementById("btn-toggle-history");
+      const closeBtn = document.getElementById("btn-close-history");
+      const historyContainer = document.getElementById("history-container");
+      const tbody = document.getElementById("history-tbody");
+
+      async function fetchHistory() {
+        try {
+          const res = await fetch("/api/history");
+          const json = await res.json();
+          if (json.success && json.data.length > 0) {
+            tbody.innerHTML = json.data.map(entry => `
+              <tr>
+                <td><strong>#${entry.id}</strong></td>
+                <td>
+                  <span class="badge ${entry.prediction_result.includes('Approved') ? 'badge-success' : 'badge-danger'}">
+                    ${entry.prediction_result}
+                  </span>
+                </td>
+                <td>${entry.age} yrs</td>
+                <td>₹${Number(entry.income).toLocaleString()}</td>
+                <td>₹${Number(entry.loan_amount).toLocaleString()}</td>
+                <td>${entry.cibil_score}</td>
+                <td>${entry.tenure} mo</td>
+                <td>${entry.created_at || 'Recently'}</td>
+              </tr>
+            `).join('');
+          } else {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 20px; color: var(--muted);">No previous user entries found in database. Submit a prediction above!</td></tr>`;
+          }
+        } catch (err) {
+          console.error("Failed to load history:", err);
+        }
+      }
+
+      if (toggleBtn && historyContainer) {
+        toggleBtn.addEventListener("click", () => {
+          if (historyContainer.style.display === "none" || historyContainer.style.display === "") {
+            historyContainer.style.display = "block";
+            fetchHistory();
+          } else {
+            historyContainer.style.display = "none";
+          }
+        });
+      }
+
+      if (closeBtn && historyContainer) {
+        closeBtn.addEventListener("click", () => {
+          historyContainer.style.display = "none";
         });
       }
     </script>

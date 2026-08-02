@@ -4,28 +4,36 @@ from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Setup logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("database")
 
 # Database URL construction
 # Order of preference: 
-# 1. DATABASE_URL env var
-# 2. Reconstructed MySQL URL from DB_HOST, DB_USER, etc.
-# 3. Fallback to local SQLite DB
+# 1. MYSQL_PUBLIC_URL env var
+# 2. DATABASE_URL env var
+# 3. MYSQL_URL env var
+# 4. Reconstructed MySQL URL from DB_HOST, DB_USER, etc.
+# 5. Fallback to local SQLite DB
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("MYSQL_PUBLIC_URL") or os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL")
 
 if DATABASE_URL:
     # Automatically rewrite mysql:// to mysql+pymysql:// for SQLAlchemy compatibility
     if DATABASE_URL.startswith("mysql://"):
         DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
 else:
-    db_host = os.getenv("DB_HOST", "localhost")
-    db_user = os.getenv("DB_USER", "root")
-    db_password = os.getenv("DB_PASSWORD", "password")
-    db_name = os.getenv("DB_NAME", "loan_predictions")
-    db_port = os.getenv("DB_PORT", "3306")
+    db_host = os.getenv("MYSQLHOST", os.getenv("DB_HOST", "localhost"))
+    db_user = os.getenv("MYSQLUSER", os.getenv("DB_USER", "root"))
+    db_password = os.getenv("MYSQLPASSWORD", os.getenv("DB_PASSWORD", "password"))
+    db_name = os.getenv("MYSQLDATABASE", os.getenv("DB_NAME", "railway"))
+    db_port = os.getenv("MYSQLPORT", os.getenv("DB_PORT", "3306"))
     
     # We will use pymysql as our driver for MySQL
     DATABASE_URL = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"

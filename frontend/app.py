@@ -202,8 +202,8 @@ with tab1:
             
         with col2:
             st.markdown("#### 💰 Financials & Requirements")
-            income = st.number_input("Monthly Applicant Income ($)", min_value=0, value=45000, step=1000, help="Gross monthly income.")
-            loan_amount = st.number_input("Requested Loan Amount ($)", min_value=0, value=250000, step=5000, help="Total mortgage amount requested.")
+            income = st.number_input("Monthly Applicant Income (₹)", min_value=0, value=45000, step=1000, help="Gross monthly income.")
+            loan_amount = st.number_input("Requested Loan Amount (₹)", min_value=0, value=250000, step=5000, help="Total mortgage amount requested.")
             cibil = st.slider("CIBIL Score", min_value=300, max_value=900, value=720, help="Credit scoring index.")
             tenure = st.slider("Loan Tenure (in Months)", min_value=1, max_value=360, value=24, help="Timeframe to repay the loan.")
             prev_loan = st.selectbox("Has Previous Loan History?", options=["Yes", "No"], index=0)
@@ -336,6 +336,23 @@ with tab1:
             except Exception as e:
                 st.error(f"Connection failure: Could not reach backend API at {backend_url}. Verify service is live. Details: {e}")
 
+    # Show Past Entries section in Tab 1
+    st.markdown("---")
+    with st.expander("📜 Show Past Entries (Database Logs)", expanded=False):
+        try:
+            h_resp = requests.get(f"{backend_url}/predictions", timeout=3)
+            if h_resp.status_code == 200:
+                h_data = h_resp.json()
+                if len(h_data) > 0:
+                    df_h = pd.DataFrame(h_data)
+                    st.dataframe(df_h, use_container_width=True)
+                else:
+                    st.info("No previous user entries found in database yet.")
+            else:
+                st.warning("Could not retrieve entries from backend database.")
+        except Exception as ex:
+            st.error(f"Error connecting to backend database: {ex}")
+
 with tab2:
     st.markdown("### 📈 Live Database Records & Visual Analytics")
     
@@ -406,7 +423,7 @@ with tab2:
                     hover_data=['age', 'gender', 'property_area'],
                     color_discrete_map={'Loan is Approved': '#2ecc71', 'Loan is Rejected': '#e74c3c'},
                     title='Income vs Requested Loan Amount (Sized by CIBIL Score)',
-                    labels={'income': 'Monthly Income ($)', 'loan_amount': 'Requested Loan ($)'}
+                    labels={'income': 'Monthly Income (₹)', 'loan_amount': 'Requested Loan (₹)'}
                 )
                 st.plotly_chart(fig_scatter, use_container_width=True)
 
@@ -417,8 +434,8 @@ with tab2:
                     "id": "Log ID",
                     "age": "Age",
                     "dependents": "Dependents",
-                    "income": "Income ($)",
-                    "loan_amount": "Loan Amount ($)",
+                    "income": "Income (₹)",
+                    "loan_amount": "Loan Amount (₹)",
                     "cibil_score": "CIBIL Score",
                     "tenure": "Tenure (Mo)",
                     "gender": "Gender",
