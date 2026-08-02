@@ -1,71 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Prediction</title>
-    <link rel="stylesheet" href="/staticfiles/style.css">
-</head>
-<body>
-        <form action="{{url_for('predict')}}" method="post">
-        <input type="number" name="Age" placeholder="Customer Age">
-        <input type="number" name="Dependents" placeholder="Family Member">
-        <input type="number" name="ApplicantIncome" placeholder="Income">
-        <input type="number" name="LoanAmount" placeholder="Loan Amount">
-        <input type="number" name="Cibil_Score" placeholder="Cibil_Score">
-        <input type="number" name="Tenure" placeholder="Tenure">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Prediction Studio</title>
+    <link rel="stylesheet" href="/staticfiles/style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-card">
+        <div>
+          <p class="eyebrow">AI-powered lending assistant</p>
+          <h1>Make better loan decisions with confidence.</h1>
+          <p class="hero-copy">
+            A refined experience for reviewing applicant details and estimating
+            approval outcomes in seconds.
+          </p>
+        </div>
+        <div class="hero-badges">
+          <span>⚡ Instant review</span>
+          <span>📈 Clear insights</span>
+          <span>🔐 Trustworthy screening</span>
+        </div>
+      </header>
 
-            <h3> Gender </h3>
-            <select name="Gender" id="g">
-                <option value=1>Male</option>
-                <option value=0>Female</option>
-            </select>
+      <main class="dashboard-grid">
+        <section class="card">
+          <div class="card-heading">
+            <h2>Applicant profile</h2>
+            <p>
+              Fill in the financial and personal details below to generate a
+              prediction.
+            </p>
+          </div>
 
-            <h3> Married </h3>
-            <select name="Married" id="g">
-                <option value=1>Yes</option>
-                <option value=0>No</option>
-            </select>
+          <form
+            action="{{ url_for('predict') }}"
+            method="post"
+            class="loan-form"
+          >
+            <div class="field-grid">
+              <label class="field">
+                <span>Customer Age</span>
+                <input
+                  type="number"
+                  name="Age"
+                  placeholder="e.g. 35"
+                  min="18"
+                  max="100"
+                />
+              </label>
 
-            <h3> Education </h3>
-            <select name="Education" id="g">
-                <option value=1>Yes</option>
-                <option value=0>No</option>
-            </select>
+              <label class="field">
+                <span>Dependents</span>
+                <input
+                  type="number"
+                  name="Dependents"
+                  placeholder="e.g. 2"
+                  min="0"
+                  max="5"
+                />
+              </label>
 
-            <h3> Self_Employed </h3>
-            <select name="Self_Employed" id="g">
-                <option value=1>Yes</option>
-                <option value=0>No</option>
-            </select>
+              <label class="field">
+                <span>Applicant Income</span>
+                <input
+                  type="number"
+                  name="ApplicantIncome"
+                  placeholder="e.g. 45000"
+                  min="0"
+                />
+              </label>
 
-            <h3> Previous_Loan_Taken </h3>
-            <select name="Previous_Loan_Taken" id="g">
-                <option value=1>Yes</option>
-                <option value=0>No</option>
-            </select>
+              <label class="field">
+                <span>Loan Amount</span>
+                <input
+                  type="number"
+                  name="LoanAmount"
+                  placeholder="e.g. 250000"
+                  min="0"
+                />
+              </label>
 
-            <h3> Property_Area </h3>
-            <select name="Property_Area" id="abc">
-                <option value=0>Rural</option>
-                <option value=1>Semiurban</option>
-                <option value=2>Urban</option>
-            </select>
+              <label class="field">
+                <span>CIBIL Score</span>
+                <input
+                  type="number"
+                  name="Cibil_Score"
+                  placeholder="e.g. 720"
+                  min="300"
+                  max="900"
+                />
+              </label>
 
-            <h3> Customer_Bandwith </h3>
-            <select name="Customer_Bandwith" id="abc">
-                <option value=0>Bad</option>
-                <option value=1>Good</option>
-                <option value=2>Medium</option>
-            </select>
+              <label class="field">
+                <span>Tenure (months)</span>
+                <input
+                  type="number"
+                  name="Tenure"
+                  placeholder="e.g. 24"
+                  min="1"
+                  max="360"
+                />
+              </label>
 
-            <br><br>
-            <button type="submit" id="sub">Prediction</button>
+              <label class="field">
+                <span>Gender</span>
+                <select name="Gender">
+                  <option value="1">Male</option>
+                  <option value="0">Female</option>
+                </select>
+              </label>
 
-        </form>
+              <label class="field">
+                <span>Married</span>
+                <select name="Married">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
 
-        <br><br>
-        {{prediction_text}}
-        
-</body>
+              <label class="field">
+                <span>Education</span>
+                <select name="Education">
+                  <option value="1">Graduate</option>
+                  <option value="0">Not Graduate</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Self Employed</span>
+                <select name="Self_Employed">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Previous Loan Taken</span>
+                <select name="Previous_Loan_Taken">
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Property Area</span>
+                <select name="Property_Area">
+                  <option value="0">Rural</option>
+                  <option value="1">Semiurban</option>
+                  <option value="2">Urban</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Customer Bandwith</span>
+                <select name="Customer_Bandwith">
+                  <option value="0">Bad</option>
+                  <option value="1">Good</option>
+                  <option value="2">Medium</option>
+                </select>
+              </label>
+            </div>
+
+            <button type="submit">Predict eligibility</button>
+          </form>
+        </section>
+
+        <aside class="card side-card">
+          <h2>What this tool checks</h2>
+          <ul class="feature-list">
+            <li>Applicant profile and income stability</li>
+            <li>Credit and repayment history</li>
+            <li>Loan amount and tenure suitability</li>
+          </ul>
+
+          {% if prediction_text %}
+          <div
+            class="prediction-banner {% if 'Approved' in prediction_text %}approved{% else %}rejected{% endif %}"
+          >
+            {{ prediction_text }}
+          </div>
+          {% endif %}
+        </aside>
+      </main>
+    </div>
+  </body>
 </html>

@@ -1,37 +1,220 @@
-body{
-    background-color: antiquewhite;
-    text-align: center;
+:root {
+  color-scheme: light;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-strong: #eef4ff;
+  --text: #14213d;
+  --muted: #5f6f8f;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --success: #047857;
+  --danger: #b91c1c;
+  --border: #dbe5f0;
 }
 
-#g{
-    width: 83px;
-    height: 33px;
-    text-align: center;
-    font-size: 20px;
-    border-radius: 10px;
+* {
+  box-sizing: border-box;
 }
 
-#g:hover{
-    background-color:chartreuse;
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #f4f7fb 0%, #e8f0ff 100%);
+  color: var(--text);
 }
 
-#abc{
-    width: 150px;
-    height: 33px;
-    text-align: center;
-    font-size: 20px;
-	border-radius: 10px;
-    }
+.page-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+}
 
-#abc:hover{
-        background-color:rgb(0, 119, 128);
-    }
+.hero-card {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 45%, #38bdf8 100%);
+  color: #fff;
+  padding: 32px;
+  border-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 18px 45px rgba(37, 99, 235, 0.22);
+}
 
-#sub{
-        width: 123px;
-        height: 33px;
-        text-align: center;
-        font-size: 15px;
-        border-radius: 15px;
-    }
-    
+.eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.hero-card h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.hero-copy {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 620px;
+  opacity: 0.95;
+}
+
+.hero-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 220px;
+}
+
+.hero-badges span {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+}
+
+.card-heading h2,
+.side-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.card-heading p,
+.side-card p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.loan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.field span {
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text);
+  background: #fbfdff;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.18);
+  border-color: var(--accent);
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent) 0%, #0ea5e9 100%);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+}
+
+.feature-list {
+  padding-left: 18px;
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.prediction-banner {
+  padding: 16px;
+  border-radius: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.prediction-banner.approved {
+  background: #dcfce7;
+  color: var(--success);
+}
+
+.prediction-banner.rejected {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-shell {
+    padding: 18px 14px 40px;
+  }
+
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-badges {
+    width: 100%;
+  }
+}
