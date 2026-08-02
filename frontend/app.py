@@ -37,7 +37,7 @@ if "localhost" in DEFAULT_BACKEND or "127.0.0.1" in DEFAULT_BACKEND:
         except Exception:
             pass
 
-# Set page configuration
+# ── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="LoanVision AI — Smart Lending Decisions",
     page_icon="🏦",
@@ -45,323 +45,340 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ─── Premium Dark-Mode Glassmorphism CSS ─────────────────────────────────────
+# ── CSS — Midnight Ember Dark Theme ──────────────────────────────────────────
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
     :root {
-        --bg-primary: #0a0e1a;
-        --bg-secondary: #0f1629;
-        --bg-card: rgba(15, 22, 41, 0.65);
-        --bg-card-hover: rgba(20, 30, 55, 0.80);
-        --glass-border: rgba(99, 130, 255, 0.12);
-        --glass-border-hover: rgba(99, 130, 255, 0.28);
-        --text-primary: #e8ecf4;
-        --text-secondary: #8b97b8;
-        --text-muted: #5a6583;
-        --accent-primary: #6366f1;
-        --accent-secondary: #818cf8;
-        --accent-glow: rgba(99, 102, 241, 0.35);
-        --success: #22c55e;
-        --success-bg: rgba(34, 197, 94, 0.12);
-        --success-border: rgba(34, 197, 94, 0.25);
-        --danger: #ef4444;
-        --danger-bg: rgba(239, 68, 68, 0.12);
-        --danger-border: rgba(239, 68, 68, 0.25);
-        --warning: #f59e0b;
-        --cyan: #06b6d4;
-        --radius-lg: 20px;
-        --radius-md: 14px;
-        --radius-sm: 10px;
-        --radius-pill: 999px;
-        --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
-        --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.10);
+        --bg-deep: #07080d;
+        --bg-surface: #0d0f17;
+        --bg-elevated: #13161f;
+        --bg-card: #161923;
+        --border-dim: rgba(255, 255, 255, 0.04);
+        --border-subtle: rgba(255, 255, 255, 0.07);
+        --border-accent: rgba(251, 146, 60, 0.20);
+        --text-white: #f1f3f8;
+        --text-light: #c4c9d8;
+        --text-mid: #8890a4;
+        --text-dim: #525a72;
+        --ember: #fb923c;
+        --ember-deep: #ea580c;
+        --ember-glow: rgba(251, 146, 60, 0.18);
+        --teal: #2dd4bf;
+        --teal-glow: rgba(45, 212, 191, 0.12);
+        --violet: #a78bfa;
+        --green: #4ade80;
+        --green-bg: rgba(74, 222, 128, 0.08);
+        --green-border: rgba(74, 222, 128, 0.18);
+        --red: #f87171;
+        --red-bg: rgba(248, 113, 113, 0.08);
+        --red-border: rgba(248, 113, 113, 0.18);
+        --r-xl: 24px;
+        --r-lg: 18px;
+        --r-md: 12px;
+        --r-sm: 8px;
     }
 
     html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-family: 'Outfit', 'Space Grotesk', sans-serif !important;
     }
 
+    /* ── Global Background ── */
     .stApp {
-        background: var(--bg-primary) !important;
+        background: var(--bg-deep) !important;
         background-image:
-            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent),
-            radial-gradient(ellipse 60% 40% at 80% 100%, rgba(6, 182, 212, 0.08), transparent) !important;
+            radial-gradient(ellipse 70% 55% at 20% -10%, rgba(251, 146, 60, 0.06), transparent),
+            radial-gradient(ellipse 50% 50% at 85% 110%, rgba(45, 212, 191, 0.04), transparent) !important;
     }
 
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 1.8rem !important;
         padding-bottom: 4rem !important;
-        max-width: 1280px !important;
+        max-width: 1320px !important;
     }
 
-    /* ── Hide Streamlit default header/footer ── */
+    /* ── Hide defaults ── */
     header[data-testid="stHeader"] { background: transparent !important; }
-    footer { display: none !important; }
-    #MainMenu { display: none !important; }
+    footer, #MainMenu { display: none !important; }
 
-    /* ── Hero Section ── */
-    .hero-wrap {
+    /* ──────────────── HERO ──────────────── */
+    .lv-hero {
         position: relative;
-        background: linear-gradient(135deg, #1a1040 0%, #0f1629 40%, #0c1a2e 70%, #0a1628 100%);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-lg);
-        padding: 48px 44px;
-        margin-bottom: 32px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--r-xl);
+        padding: 0;
         overflow: hidden;
-        box-shadow: var(--shadow-glass), var(--shadow-glow);
+        margin-bottom: 28px;
+        display: flex;
     }
-    .hero-wrap::before {
+    .lv-hero-left {
+        flex: 1;
+        padding: 44px 48px;
+        z-index: 1;
+    }
+    .lv-hero-right {
+        width: 340px;
+        min-height: 100%;
+        background: linear-gradient(160deg, rgba(251, 146, 60, 0.08) 0%, rgba(45, 212, 191, 0.05) 100%);
+        border-left: 1px solid var(--border-dim);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 36px 32px;
+        gap: 16px;
+        z-index: 1;
+    }
+    /* ambient glow */
+    .lv-hero::before {
         content: '';
         position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        top: -60%;
+        left: -15%;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, var(--ember-glow) 0%, transparent 70%);
         pointer-events: none;
     }
-    .hero-wrap::after {
-        content: '';
-        position: absolute;
-        bottom: -30%;
-        left: -10%;
-        width: 350px;
-        height: 350px;
-        background: radial-gradient(circle, rgba(6, 182, 212, 0.10) 0%, transparent 70%);
-        pointer-events: none;
-    }
-    .hero-eyebrow {
+    .lv-tag {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        font-size: 0.72rem;
+        gap: 6px;
+        font-size: 0.68rem;
         font-weight: 700;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: var(--accent-secondary);
-        background: rgba(99, 102, 241, 0.10);
-        border: 1px solid rgba(99, 102, 241, 0.18);
-        padding: 6px 16px;
-        border-radius: var(--radius-pill);
-        margin-bottom: 20px;
+        color: var(--ember);
+        background: var(--ember-glow);
+        border: 1px solid rgba(251, 146, 60, 0.15);
+        padding: 5px 14px;
+        border-radius: 999px;
+        margin-bottom: 18px;
     }
-    .hero-title {
+    .lv-hero-title {
         font-size: 2.6rem;
         font-weight: 900;
-        line-height: 1.1;
-        color: var(--text-primary);
+        line-height: 1.08;
+        color: var(--text-white);
         margin: 0 0 14px;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
     }
-    .hero-title span {
-        background: linear-gradient(135deg, var(--accent-primary), var(--cyan));
+    .lv-hero-title em {
+        font-style: normal;
+        background: linear-gradient(135deg, var(--ember) 0%, #fbbf24 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-    .hero-copy {
-        font-size: 1.05rem;
+    .lv-hero-sub {
+        font-size: 1rem;
         line-height: 1.7;
-        color: var(--text-secondary);
-        max-width: 640px;
+        color: var(--text-mid);
         margin: 0;
-    }
-    .hero-stats {
-        display: flex;
-        gap: 12px;
-        margin-top: 28px;
-        flex-wrap: wrap;
-    }
-    .hero-stat {
-        background: rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: var(--radius-md);
-        padding: 14px 22px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .hero-stat:hover {
-        border-color: var(--glass-border-hover);
-        background: rgba(255, 255, 255, 0.07);
-        transform: translateY(-2px);
-    }
-    .hero-stat-icon {
-        font-size: 1.3rem;
-    }
-    .hero-stat-label {
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: var(--text-secondary);
+        max-width: 560px;
     }
 
-    /* ── Glass Card ── */
-    .glass-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-lg);
-        padding: 32px;
-        box-shadow: var(--shadow-glass);
-        transition: border-color 0.3s ease;
-    }
-    .glass-card:hover {
-        border-color: var(--glass-border-hover);
-    }
-    .card-header {
-        margin-bottom: 24px;
-    }
-    .card-header h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0 0 6px;
+    /* hero right metric chips */
+    .lv-chip {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-dim);
+        border-radius: var(--r-md);
+        padding: 14px 18px;
         display: flex;
         align-items: center;
-        gap: 10px;
-    }
-    .card-header p {
-        font-size: 0.88rem;
-        color: var(--text-secondary);
-        margin: 0;
-    }
-
-    /* ── Side Panel ── */
-    .side-panel {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-lg);
-        padding: 28px;
-        box-shadow: var(--shadow-glass);
-        margin-bottom: 20px;
-    }
-    .side-panel-title {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-bottom: 20px;
-    }
-    .check-item {
-        display: flex;
-        align-items: flex-start;
         gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        transition: all 0.3s ease;
     }
-    .check-item:last-child { border-bottom: none; }
-    .check-icon {
-        width: 28px;
-        height: 28px;
-        min-width: 28px;
-        border-radius: 8px;
+    .lv-chip:hover {
+        border-color: var(--border-accent);
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(-4px);
+    }
+    .lv-chip-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.85rem;
+        font-size: 1.1rem;
     }
-    .check-icon.purple {
-        background: rgba(99, 102, 241, 0.12);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-    }
-    .check-icon.cyan {
-        background: rgba(6, 182, 212, 0.12);
-        border: 1px solid rgba(6, 182, 212, 0.2);
-    }
-    .check-icon.amber {
-        background: rgba(245, 158, 11, 0.12);
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-    .check-text {
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        line-height: 1.5;
-    }
-    .check-text strong {
-        color: var(--text-primary);
+    .lv-chip-icon.ember { background: var(--ember-glow); }
+    .lv-chip-icon.teal  { background: var(--teal-glow); }
+    .lv-chip-icon.violet { background: rgba(167, 139, 250, 0.12); }
+    .lv-chip-text {
+        font-size: 0.82rem;
         font-weight: 600;
+        color: var(--text-light);
     }
 
-    /* ── DB Status Pill ── */
-    .db-pill {
+    /* ──────────────── FORM CARD ──────────────── */
+    .lv-form-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--r-xl);
+        padding: 36px;
+    }
+    .lv-form-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 8px;
+    }
+    .lv-form-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: var(--ember-glow);
+        border: 1px solid rgba(251, 146, 60, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+    .lv-form-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-white);
+        margin: 0;
+    }
+    .lv-form-sub {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        margin: 4px 0 0 58px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-dim);
+        margin-bottom: 4px;
+    }
+
+    /* ──────────────── SIDE PANEL ──────────────── */
+    .lv-side {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--r-xl);
+        padding: 28px;
+        margin-bottom: 20px;
+    }
+    .lv-side-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 20px;
+    }
+    .lv-feature {
+        display: flex;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border-dim);
+        align-items: flex-start;
+    }
+    .lv-feature:last-child { border-bottom: none; }
+    .lv-f-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    .lv-f-icon.a { background: var(--ember-glow); border: 1px solid rgba(251, 146, 60, 0.12); }
+    .lv-f-icon.b { background: var(--teal-glow); border: 1px solid rgba(45, 212, 191, 0.12); }
+    .lv-f-icon.c { background: rgba(167, 139, 250, 0.10); border: 1px solid rgba(167, 139, 250, 0.12); }
+    .lv-f-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-light);
+        margin: 0 0 2px;
+    }
+    .lv-f-desc {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* ──────────────── STATUS PILL ──────────────── */
+    .lv-status {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 600;
-        padding: 8px 16px;
-        border-radius: var(--radius-pill);
-        margin-top: 8px;
+        padding: 7px 16px;
+        border-radius: 999px;
+        margin-top: 6px;
     }
-    .db-pill.connected {
-        background: var(--success-bg);
-        border: 1px solid var(--success-border);
-        color: var(--success);
+    .lv-status.ok {
+        background: var(--green-bg);
+        border: 1px solid var(--green-border);
+        color: var(--green);
     }
-    .db-pill.local {
-        background: rgba(245, 158, 11, 0.10);
-        border: 1px solid rgba(245, 158, 11, 0.20);
-        color: var(--warning);
+    .lv-status.warn {
+        background: var(--ember-glow);
+        border: 1px solid rgba(251, 146, 60, 0.18);
+        color: var(--ember);
     }
+    @keyframes blink {
+        0%,100% { opacity:1; }
+        50% { opacity:0.3; }
+    }
+    .lv-dot {
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        display: inline-block;
+        animation: blink 2s ease-in-out infinite;
+    }
+    .lv-dot.g { background: var(--green); }
+    .lv-dot.o { background: var(--ember); }
 
-    /* ── Prediction Result Banners ── */
-    .result-card {
-        border-radius: var(--radius-lg);
-        padding: 28px 32px;
+    /* ──────────────── RESULT BANNER ──────────────── */
+    .lv-result {
+        border-radius: var(--r-lg);
+        padding: 26px;
         text-align: center;
         margin-top: 20px;
         position: relative;
         overflow: hidden;
     }
-    .result-card::before {
+    .lv-result::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        bottom: 0; left: 0; right: 0;
         height: 3px;
     }
-    .result-card.approved {
-        background: var(--success-bg);
-        border: 1px solid var(--success-border);
+    .lv-result.pass {
+        background: var(--green-bg);
+        border: 1px solid var(--green-border);
     }
-    .result-card.approved::before {
-        background: linear-gradient(90deg, var(--success), #4ade80);
+    .lv-result.pass::after { background: linear-gradient(90deg, var(--green), var(--teal)); }
+    .lv-result.fail {
+        background: var(--red-bg);
+        border: 1px solid var(--red-border);
     }
-    .result-card.rejected {
-        background: var(--danger-bg);
-        border: 1px solid var(--danger-border);
-    }
-    .result-card.rejected::before {
-        background: linear-gradient(90deg, var(--danger), #f87171);
-    }
-    .result-icon {
-        font-size: 2.5rem;
-        margin-bottom: 8px;
-    }
-    .result-label {
-        font-size: 1.4rem;
+    .lv-result.fail::after { background: linear-gradient(90deg, var(--red), #fb923c); }
+    .lv-res-icon { font-size: 2.2rem; margin-bottom: 6px; }
+    .lv-res-text {
+        font-size: 1.3rem;
         font-weight: 800;
         letter-spacing: -0.01em;
     }
-    .result-card.approved .result-label { color: var(--success); }
-    .result-card.rejected .result-label { color: var(--danger); }
-    .result-sub {
-        font-size: 0.82rem;
-        color: var(--text-muted);
+    .lv-result.pass .lv-res-text { color: var(--green); }
+    .lv-result.fail .lv-res-text { color: var(--red); }
+    .lv-res-sub {
+        font-size: 0.78rem;
+        color: var(--text-dim);
         margin-top: 4px;
     }
 
-    /* ── Streamlit form overrides ── */
+    /* ──────────────── STREAMLIT WIDGET OVERRIDES ──────────────── */
     div[data-testid="stForm"] {
         background: transparent !important;
         border: none !important;
@@ -369,125 +386,150 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* Input / Select base styling */
-    div[data-testid="stNumberInput"] label,
-    div[data-testid="stSelectbox"] label {
-        color: var(--text-secondary) !important;
-        font-size: 0.82rem !important;
+    /* labels */
+    div[data-testid="stNumberInput"] label p,
+    div[data-testid="stSelectbox"] label p {
+        color: var(--text-mid) !important;
+        font-size: 0.78rem !important;
         font-weight: 600 !important;
-        letter-spacing: 0.03em !important;
+        letter-spacing: 0.04em !important;
         text-transform: uppercase !important;
     }
-    div[data-testid="stNumberInput"] input,
-    div[data-baseweb="select"] {
-        background: rgba(255, 255, 255, 0.03) !important;
-        border: 1px solid var(--glass-border) !important;
-        border-radius: var(--radius-sm) !important;
-        color: var(--text-primary) !important;
-        transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+
+    /* inputs */
+    div[data-testid="stNumberInput"] input {
+        background: var(--bg-elevated) !important;
+        border: 1px solid var(--border-subtle) !important;
+        border-radius: var(--r-sm) !important;
+        color: var(--text-white) !important;
+        font-family: 'Space Grotesk', monospace !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
     }
-    div[data-testid="stNumberInput"] input:focus,
-    div[data-baseweb="select"]:focus-within {
-        border-color: var(--accent-primary) !important;
-        box-shadow: 0 0 0 3px var(--accent-glow) !important;
+    div[data-testid="stNumberInput"] input:focus {
+        border-color: var(--ember) !important;
+        box-shadow: 0 0 0 3px var(--ember-glow) !important;
     }
 
-    /* Submit button */
+    /* selectbox */
+    div[data-baseweb="select"] {
+        background: var(--bg-elevated) !important;
+        border: 1px solid var(--border-subtle) !important;
+        border-radius: var(--r-sm) !important;
+        color: var(--text-white) !important;
+    }
+    div[data-baseweb="select"]:focus-within {
+        border-color: var(--ember) !important;
+        box-shadow: 0 0 0 3px var(--ember-glow) !important;
+    }
+
+    /* Submit & Action buttons */
     div[data-testid="stForm"] button[type="submit"],
     div.stButton > button {
-        background: linear-gradient(135deg, var(--accent-primary) 0%, #4f46e5 100%) !important;
-        color: white !important;
+        background: linear-gradient(135deg, var(--ember-deep) 0%, var(--ember) 100%) !important;
+        color: #fff !important;
         font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        padding: 14px 36px !important;
-        border-radius: var(--radius-pill) !important;
+        font-size: 0.92rem !important;
+        padding: 14px 40px !important;
+        border-radius: 999px !important;
         border: none !important;
-        box-shadow: 0 8px 24px var(--accent-glow) !important;
+        box-shadow: 0 6px 24px var(--ember-glow) !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        letter-spacing: 0.02em !important;
+        letter-spacing: 0.03em !important;
     }
     div[data-testid="stForm"] button[type="submit"]:hover,
     div.stButton > button:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 14px 36px rgba(99, 102, 241, 0.35) !important;
+        transform: translateY(-3px) scale(1.02) !important;
+        box-shadow: 0 12px 36px rgba(251, 146, 60, 0.30) !important;
     }
 
-    /* Dataframe styling */
+    /* history section header */
+    .lv-hist-header {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--r-xl);
+        padding: 28px 36px;
+        margin-top: 12px;
+        margin-bottom: 8px;
+    }
+    .lv-hist-header h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-white);
+        margin: 0 0 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .lv-hist-header p {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        margin: 0;
+    }
+
+    /* dataframe */
     div[data-testid="stDataFrame"] {
-        border-radius: var(--radius-md) !important;
+        border-radius: var(--r-md) !important;
         overflow: hidden !important;
     }
 
-    /* ── Section divider ── */
-    .section-divider {
+    /* section break */
+    .lv-break {
         height: 1px;
-        background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-        margin: 28px 0;
+        background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+        margin: 32px 0;
     }
 
-    /* ── Animated dot ── */
-    @keyframes pulse-dot {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-    }
-    .pulse-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        animation: pulse-dot 2s ease-in-out infinite;
-    }
-    .pulse-dot.green { background: var(--success); }
-    .pulse-dot.amber { background: var(--warning); }
-
-    /* ── Footer ── */
-    .app-footer {
+    /* footer */
+    .lv-footer {
         text-align: center;
-        padding: 32px 0 16px;
-        font-size: 0.78rem;
-        color: var(--text-muted);
+        padding: 36px 0 12px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
     }
-    .app-footer a {
-        color: var(--accent-secondary);
+    .lv-footer a {
+        color: var(--ember);
         text-decoration: none;
+        font-weight: 600;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero Section ──────────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════════════════
+#  HERO SECTION
+# ═══════════════════════════════════════════════════════════════════════════════
 st.markdown("""
-<div class="hero-wrap">
-    <div class="hero-eyebrow">✦ AI-Powered Lending Intelligence</div>
-    <h1 class="hero-title">Smarter Loan Decisions,<br><span>Built with Confidence.</span></h1>
-    <p class="hero-copy">
-        Instantly evaluate applicant profiles against our trained ML model.
-        Get clear, data-driven approval predictions in seconds — no guesswork.
-    </p>
-    <div class="hero-stats">
-        <div class="hero-stat">
-            <span class="hero-stat-icon">⚡</span>
-            <span class="hero-stat-label">Instant Predictions</span>
+<div class="lv-hero">
+    <div class="lv-hero-left">
+        <div class="lv-tag">✦ AI-Powered Lending Engine</div>
+        <h1 class="lv-hero-title">Predict Loan Approvals<br>with <em>Confidence.</em></h1>
+        <p class="lv-hero-sub">
+            Feed applicant data into our trained ML model and get instant,
+            data-driven eligibility verdicts — no guesswork, just results.
+        </p>
+    </div>
+    <div class="lv-hero-right">
+        <div class="lv-chip">
+            <div class="lv-chip-icon ember">⚡</div>
+            <span class="lv-chip-text">Real-time Predictions</span>
         </div>
-        <div class="hero-stat">
-            <span class="hero-stat-icon">🎯</span>
-            <span class="hero-stat-label">ML-Driven Accuracy</span>
+        <div class="lv-chip">
+            <div class="lv-chip-icon teal">🎯</div>
+            <span class="lv-chip-text">ML-Driven Accuracy</span>
         </div>
-        <div class="hero-stat">
-            <span class="hero-stat-icon">🔒</span>
-            <span class="hero-stat-label">Secure & Logged</span>
-        </div>
-        <div class="hero-stat">
-            <span class="hero-stat-icon">📊</span>
-            <span class="hero-stat-label">Full Audit Trail</span>
+        <div class="lv-chip">
+            <div class="lv-chip-icon violet">🔒</div>
+            <span class="lv-chip-text">Secure Audit Trail</span>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── Main Grid Layout ─────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════════════════
+#  MAIN LAYOUT
+# ═══════════════════════════════════════════════════════════════════════════════
 col_main, col_side = st.columns([2.4, 1.0], gap="large")
 
-# Check DB / Backend Health
+# Backend / DB health
 backend_url = os.getenv("BACKEND_URL", "http://localhost:8080")
 db_connected = False
 db_type = "MySQL"
@@ -501,14 +543,15 @@ try:
 except Exception:
     db_connected = False
 
+# ── Left Column — Form ───────────────────────────────────────────────────────
 with col_main:
-    # Form Card
     st.markdown("""
-    <div class="glass-card">
-        <div class="card-header">
-            <h2>📋 Applicant Profile</h2>
-            <p>Complete the financial and personal details below to generate a prediction.</p>
+    <div class="lv-form-card">
+        <div class="lv-form-header">
+            <div class="lv-form-icon">📋</div>
+            <h3 class="lv-form-title">Applicant Profile</h3>
         </div>
+        <p class="lv-form-sub">Fill in all financial &amp; personal details to generate a prediction.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -532,25 +575,34 @@ with col_main:
             self_employed = st.selectbox("Self Employed", options=["Yes", "No"], index=1)
             property_area = st.selectbox("Property Area", options=["Rural", "Semiurban", "Urban"], index=0)
 
-        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="lv-break"></div>', unsafe_allow_html=True)
         submit_btn = st.form_submit_button("🚀  Predict Eligibility")
 
+# ── Right Column — Info Panel ─────────────────────────────────────────────────
 with col_side:
-    # What This Tool Checks
     st.markdown("""
-    <div class="side-panel">
-        <div class="side-panel-title">What This Tool Checks</div>
-        <div class="check-item">
-            <div class="check-icon purple">📊</div>
-            <div class="check-text"><strong>Income Stability</strong><br>Applicant profile and income assessment</div>
+    <div class="lv-side">
+        <div class="lv-side-label">Evaluation Criteria</div>
+        <div class="lv-feature">
+            <div class="lv-f-icon a">📊</div>
+            <div>
+                <p class="lv-f-title">Income Stability</p>
+                <p class="lv-f-desc">Evaluates income level and employment type</p>
+            </div>
         </div>
-        <div class="check-item">
-            <div class="check-icon cyan">🏦</div>
-            <div class="check-text"><strong>Credit History</strong><br>CIBIL score and repayment track record</div>
+        <div class="lv-feature">
+            <div class="lv-f-icon b">🏦</div>
+            <div>
+                <p class="lv-f-title">Credit History</p>
+                <p class="lv-f-desc">CIBIL score and repayment track record</p>
+            </div>
         </div>
-        <div class="check-item">
-            <div class="check-icon amber">⚖️</div>
-            <div class="check-text"><strong>Loan Suitability</strong><br>Amount and tenure feasibility analysis</div>
+        <div class="lv-feature">
+            <div class="lv-f-icon c">⚖️</div>
+            <div>
+                <p class="lv-f-title">Loan Suitability</p>
+                <p class="lv-f-desc">Amount vs tenure feasibility analysis</p>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -558,18 +610,18 @@ with col_side:
     # DB status
     if db_connected:
         st.markdown(f"""
-        <div class="db-pill connected">
-            <span class="pulse-dot green"></span> {db_type} Database Connected
+        <div class="lv-status ok">
+            <span class="lv-dot g"></span> {db_type} Connected
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown("""
-        <div class="db-pill local">
-            <span class="pulse-dot amber"></span> Local Database Active
+        <div class="lv-status warn">
+            <span class="lv-dot o"></span> Local DB Active
         </div>
         """, unsafe_allow_html=True)
 
-    # Form Submission Execution & Verdict Display
+    # ── Prediction execution ──────────────────────────────────────────────────
     if submit_btn:
         dep_val = int(dependents)
         gen_val = 1 if gender == "Male" else 0
@@ -600,7 +652,7 @@ with col_side:
             "Customer_Bandwith": band_val
         }
 
-        with st.spinner("Analyzing applicant profile..."):
+        with st.spinner("Analyzing applicant profile…"):
             try:
                 resp = requests.post(f"{backend_url}/predict", json=payload, timeout=5)
                 if resp.status_code == 200:
@@ -611,40 +663,40 @@ with col_side:
 
                     if pred_class != 0:
                         st.markdown("""
-                        <div class="result-card approved">
-                            <div class="result-icon">✅</div>
-                            <div class="result-label">Loan is Approved</div>
-                            <div class="result-sub">Applicant meets eligibility criteria</div>
+                        <div class="lv-result pass">
+                            <div class="lv-res-icon">✅</div>
+                            <div class="lv-res-text">Loan Approved</div>
+                            <div class="lv-res-sub">Applicant meets all eligibility criteria</div>
                         </div>
                         """, unsafe_allow_html=True)
                         st.balloons()
                     else:
                         st.markdown("""
-                        <div class="result-card rejected">
-                            <div class="result-icon">❌</div>
-                            <div class="result-label">Loan is Rejected</div>
-                            <div class="result-sub">Applicant does not meet criteria at this time</div>
+                        <div class="lv-result fail">
+                            <div class="lv-res-icon">❌</div>
+                            <div class="lv-res-text">Loan Rejected</div>
+                            <div class="lv-res-sub">Applicant does not meet criteria at this time</div>
                         </div>
                         """, unsafe_allow_html=True)
 
                     if db_saved:
-                        st.caption("✅ Result logged to database.")
+                        st.caption("✅ Result saved to database.")
                 else:
                     st.error("Prediction failed.")
             except Exception as e:
                 st.error(f"Backend connection error: {e}")
 
-# ── History Section ───────────────────────────────────────────────────────────
-st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+# ═══════════════════════════════════════════════════════════════════════════════
+#  HISTORY SECTION
+# ═══════════════════════════════════════════════════════════════════════════════
+st.markdown('<div class="lv-break"></div>', unsafe_allow_html=True)
 show_history = st.button("📜  Show Past Entries")
 
 if show_history:
     st.markdown("""
-    <div class="glass-card" style="margin-top: 12px;">
-        <div class="card-header">
-            <h2>📜 Prediction History</h2>
-            <p>Previously submitted applications and their verdicts.</p>
-        </div>
+    <div class="lv-hist-header">
+        <h2>📜 Prediction History</h2>
+        <p>All previously submitted applications and their verdicts.</p>
     </div>
     """, unsafe_allow_html=True)
     try:
@@ -672,7 +724,7 @@ if show_history:
                 })
                 st.dataframe(df_display, use_container_width=True)
             else:
-                st.info("No previous user entries found in database.")
+                st.info("No previous entries found in database.")
         else:
             st.warning("Unable to fetch history from database.")
     except Exception as ex:
@@ -680,7 +732,7 @@ if show_history:
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
-<div class="app-footer">
+<div class="lv-footer">
     Built with ❤️ using <a href="https://streamlit.io" target="_blank">Streamlit</a> &amp; FastAPI · LoanVision AI
 </div>
 """, unsafe_allow_html=True)
